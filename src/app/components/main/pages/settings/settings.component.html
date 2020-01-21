@@ -1,0 +1,56 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">{{ title }}</h1>
+<mat-card>
+  <mat-card-content><form [formGroup]="settingsForm">
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline">
+        <mat-label>Background Color</mat-label>
+        <label><input matInput formControlName="bgcolor" readonly/></label>
+        <input matSuffix matInput [(colorPicker)]="color1" cpPosition="left" [style.background]="color1" readonly/>
+        <mat-error *ngIf="settingsForm.get('bgcolor').hasError('required')">Required Field</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Text Color</mat-label>
+        <label><input matInput formControlName="textcolor" readonly/></label>
+        <input matSuffix clas matInput [(colorPicker)]="color2" cpPosition="left" [style.background]="color2" readonly/>
+      </mat-form-field>
+    </mat-toolbar-row><mat-toolbar-row>
+      <mat-form-field appearance="outline">
+        <mat-label>Form Type</mat-label>
+        <mat-select formControlName="formtype">
+          <mat-option value="outlne">outline</mat-option>
+          <mat-option value="legacy">legacy</mat-option>
+          <mat-option value="fill">fill</mat-option>
+          <mat-option value="standard">standard</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Layout Type</mat-label>
+        <mat-select value="outlne" formControlName="layouttype" >
+          <mat-option value="default">default</mat-option>
+          <mat-option value="flat">flat</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Sidebar At Start</mat-label>
+        <mat-select value="outlne" formControlName="sidebarstart">
+          <mat-option value="opened">Opened</mat-option>
+          <mat-option value="closed">Closed</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Color Indicator</mat-label>
+        <mat-select value="primary" formControlName="indicator" >
+          <mat-option value="opened">primary</mat-option>
+          <mat-option value="closed">accent</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-toolbar-row></form>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-action-row align="end">
+      <button mat-raised-button color="accent" (click)="submit()" [disabled]="settingsForm.invalid">
+        <mat-icon>save</mat-icon>save</button>
+      <button mat-stroked-button color="warn"><mat-icon>cancel</mat-icon>cancel</button>
+    </mat-action-row>
+  </mat-card-actions>
+</mat-card>

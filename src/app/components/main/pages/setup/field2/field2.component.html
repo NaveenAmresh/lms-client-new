@@ -1,0 +1,21 @@
+<mat-toolbar-row>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%">
+    <mat-label>Add Book Publisher</mat-label>
+    <label><input #pubadd matInput type="text"></label>
+    <button matSuffix mat-icon-button (click)="add2(pubadd.value); pubadd.value=''" [disabled]="pubadd.value===''"><mat-icon>add_circle</mat-icon></button>
+  </mat-form-field>
+  <mat-progress-bar *ngIf="progress===true" style="padding-left: 5px;width: 50%" mode="indeterminate"></mat-progress-bar>
+</mat-toolbar-row><mat-toolbar-row>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%">
+    <mat-label>Select Book Publisher</mat-label>
+    <label><mat-select #selectpub (selectionChange)="editpub.value=$event.source.selected.viewValue">
+      <mat-option *ngFor="let pub of pubs" [value]="pub.publisher_id" [disabled]="pub.publisher_id === 0">{{pub.publisher}}</mat-option>
+    </mat-select></label>
+    <button matSuffix mat-icon-button [disabled]="selectpub.selected===undefined" (click)="d2($event,selectpub.value)"><mat-icon>delete</mat-icon></button>
+  </mat-form-field>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%; padding-left: 5px">
+    <mat-label>Edit Book Publisher</mat-label>
+    <label><input #editpub matInput type="text" [disabled]="selectpub.selected===undefined"></label>
+    <button [disabled]="editpub.value===''||editpub.disabled" (click)="up2(selectpub.selected.value,editpub.value)"
+            matSuffix mat-icon-button><mat-icon>save</mat-icon></button>
+  </mat-form-field></mat-toolbar-row>

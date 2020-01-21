@@ -1,0 +1,21 @@
+<form [formGroup]="SetupForm"><mat-toolbar-row><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%;">
+  <mat-label>Header Title</mat-label>
+  <label><input matInput type="text" formControlName="headerTitle"></label>
+</mat-form-field><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%; padding-left: 17px">
+  <mat-label>login Title</mat-label>
+  <label><input matInput type="text" formControlName="loginTitle"></label>
+</mat-form-field><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%; padding-left: 17px">
+  <mat-label>Copyright Name</mat-label><label><input matInput type="text" formControlName="cr"></label>
+</mat-form-field></mat-toolbar-row><mat-toolbar-row><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%;">
+  <mat-label>Book Limit</mat-label>
+  <label><input matInput type="text" formControlName="book_limit"></label>
+</mat-form-field><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%; padding-left: 17px">
+  <mat-label>Damaged Fine</mat-label>
+  <label><input matInput type="text" formControlName="damaged_fine"></label>
+</mat-form-field><mat-form-field color="accent" class="half" appearance="outline" style="padding-top: 2%; padding-left: 17px">
+  <mat-label>Expired Fine Per Day</mat-label><label><input matInput type="text" formControlName="expired_fine"></label>
+</mat-form-field></mat-toolbar-row></form>
+<mat-card-actions align="right"><br>
+  <button mat-raised-button color="accent" [disabled]="SetupForm.invalid" (click)="submit()"><mat-icon>save</mat-icon> Save</button>
+  <button mat-raised-button (click)="ngOnInit()"><mat-icon>refresh</mat-icon> Reset</button>
+</mat-card-actions>

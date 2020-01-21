@@ -1,0 +1,73 @@
+*
+  -webkit-box-sizing: border-box
+  box-sizing: border-box
+body
+  padding: 0
+  margin: 0
+#notfound
+  position: relative
+  height: 100vh
+#notfound .notfound
+  position: absolute
+  left: 50%
+  top: 50%
+  -webkit-transform: translate(-50%, -50%)
+  -ms-transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%)
+.notfound
+  max-width: 767px
+  width: 100%
+  line-height: 1.4
+  text-align: center
+  padding: 15px
+.notfound .notfound-404
+  position: relative
+  height: 220px
+.notfound .notfound-404 h1
+  font-family: 'Kanit', sans-serif
+  position: absolute
+  left: 50%
+  top: 50%
+  -webkit-transform: translate(-50%, -50%)
+  -ms-transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%)
+  font-size: 186px
+  font-weight: 200
+  margin: 0
+  background: linear-gradient(-270deg,#ffa34f,#ff6f68)
+  color: transparent
+  -webkit-background-clip: text
+  background-clip: text
+  text-transform: uppercase
+.notfound h2
+  background: linear-gradient(-130deg, #fffaf5, #ff6f68, #fffaf5, #00ebff)
+  color: transparent
+  -webkit-background-clip: text
+  background-clip: text
+  font-family: 'Kanit', sans-serif
+  font-size: 33px
+  font-weight: 200
+  text-transform: uppercase
+  margin-top: 0px
+  margin-bottom: 25px
+  letter-spacing: 3px
+.notfound p
+  font-family: 'Kanit', sans-serif
+  font-size: 17px
+  font-weight: 200
+  margin-top: 0
+  margin-bottom: 25px
+  text-transform: capitalize
+  color: #fff8ff
+.notfound button
+  color: #ff0311
+  border: 1px solid darkmagenta
+@media only screen and (max-width: 480px)
+  .notfound .notfound-404
+    position: relative
+    height: 168px
+  .notfound .notfound-404 h1
+    font-size: 142px
+  .notfound h2
+    font-size: 22px
+

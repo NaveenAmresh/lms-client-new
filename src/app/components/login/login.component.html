@@ -1,0 +1,34 @@
+<div class="login card">
+  <mat-card>
+    <mat-card-actions align="center">
+      <img mat-card-avatar mat-card-sm-image src="../../../assets/images/books.jpg" alt="LOGIN">
+      <mat-card-title>
+        {{logintitle}}
+      </mat-card-title>
+    </mat-card-actions>
+    <mat-card-content>
+      <form [formGroup]="loginForm" class="full">
+        <mat-toolbar-row>
+          <mat-form-field color="accent" class="full" appearance="standard">
+            <mat-label>UserName</mat-label>
+            <input type="text" matInput placeholder="Username" formControlName="username">
+            <mat-error *ngIf="loginForm.get('username').hasError('required')">Required Field</mat-error>
+          </mat-form-field>
+        </mat-toolbar-row>
+        <mat-toolbar-row>
+          <mat-form-field color="accent" class="full" appearance="standard">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput placeholder="Password" formControlName="password">
+            <mat-error *ngIf="loginForm.get('password').hasError('required')">Required Field</mat-error>
+          </mat-form-field>
+        </mat-toolbar-row>
+        <a (click)="openDialog()">Forgot Password?</a>
+        <div class="button">
+          <button mat-raised-button type="submit" color="accent" (click)="login()">
+            Login
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

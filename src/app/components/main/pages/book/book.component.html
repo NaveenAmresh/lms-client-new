@@ -1,0 +1,121 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">Add Book</h1>
+<mat-card  [style.margin]="'10px'" [style.display]="display">
+  <mat-card-content>
+    <form [formGroup]="BookForm" enctype="multipart/form-data">
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>ISBN *</mat-label>
+          <label>
+            <input matInput formControlName="isbn" (change)="checkIsbn(BookForm.value.isbn)" [readonly]="id!==0">
+          </label>
+          <mat-error *ngIf="BookForm.get('isbn').hasError('required')">Required Field</mat-error>
+          <mat-error *ngIf="BookForm.get('isbn').hasError('pattern') else elseTemplate">The Numbers are only allowed</mat-error>
+          <ng-template #elseTemplate> <mat-error *ngIf="BookForm.get('isbn').hasError('minlength') || BookForm.get('isbn').hasError('maxlength')">
+            ISBN number should be 13 digits (Add zeros at start if it contains 10 digits)
+          </mat-error></ng-template>
+          <mat-error *ngIf="BookForm.get('isbn').hasError('incorrect')">This ISBN Code Already Exist</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Author Name *</mat-label>
+          <label>
+            <input matInput formControlName="author_name">
+          </label>
+          <mat-error *ngIf="BookForm.get('author_name').hasError('required')">Required Field</mat-error>
+        </mat-form-field>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="full" color="accent">
+          <mat-label>Book Title *</mat-label>
+          <label>
+            <input matInput formControlName="book_title">
+          </label>
+          <mat-error *ngIf="BookForm.get('book_title').hasError('required')">Required Field</mat-error>
+          <mat-error *ngIf="BookForm.get('book_title').hasError('maxlength')">The Title Exceeds Maximum Length</mat-error>
+        </mat-form-field>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Category *</mat-label>
+          <label>
+            <mat-select formControlName="category">
+              <mat-option *ngFor="let category of categories" [value]="category.category_id" [disabled]="category.category_id === 0">
+                {{category.category}}
+              </mat-option>
+            </mat-select>
+          </label>
+          <button mat-icon-button matSuffix matTooltip="Manage Categories" (click)="up1($event)">
+            <mat-icon color="accent" matSuffix>aspect_ratio</mat-icon>
+          </button>
+          <mat-error *ngIf="BookForm.get('category').hasError('required')">Required Field</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Publisher</mat-label>
+          <label>
+            <mat-select formControlName="publisher">
+              <mat-option *ngFor="let publish of publishers" [value]="publish.publisher_id" [disabled]="publish.publisher_id === 0">
+                {{publish.publisher}}
+              </mat-option>
+            </mat-select>
+          </label>
+          <button mat-icon-button matSuffix matTooltip="Manage Publishers" (click)="sample($event)">
+            <mat-icon color="accent" matSuffix>aspect_ratio</mat-icon></button>
+        </mat-form-field>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="full" color="accent">
+          <mat-label>Google Book Url</mat-label><label><input matInput formControlName="book_url"></label>
+        </mat-form-field>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Upload Cover Image</mat-label>
+          <label><input matInput [value]="cover.value" accept="application/image" readonly></label>
+          <button mat-icon-button matSuffix (click)="cover.click()">
+            <mat-icon matTooltip="Click Here to Upload" color="accent" matSuffix>create_new_folder</mat-icon></button>
+          <a mat-icon-button matPrefix [href]="u_img" target="_blank" [disabled] = "link1==='link_off'">
+            <mat-icon [matTooltip]="link1==='link_off'?'Empty Link':'View Uploaded Image'" color="accent" matSuffix>{{link1}}</mat-icon>
+          </a>
+        </mat-form-field>
+        <input #cover type="file" accept="image/*" formControlName="book_images" (change)="onImageChange($event)" hidden>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Upload PDF</mat-label><label><input matInput [value]="pdf.value" readonly></label>
+          <button mat-icon-button matSuffix (click)="pdf.click()">
+            <mat-icon matTooltip="Click Here to Upload" color="accent" matSuffix>create_new_folder</mat-icon>
+          </button>
+          <a mat-icon-button matPrefix [href]="u_pdf" target="_blank" [disabled] = "link2==='link_off'">
+            <mat-icon [matTooltip]="link2==='link_off'?'Empty Link':'View Uploaded PDF'" color="accent" matSuffix>{{link2}}</mat-icon>
+          </a>
+        </mat-form-field>
+        <input #pdf type="file" accept="application/pdf" formControlName="pdf" (change)="onFileChange($event)" hidden>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="full" color="accent">
+          <mat-label>External URL</mat-label><label><input matInput formControlName="book_url"></label>
+        </mat-form-field>
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Price *</mat-label><label><input matInput formControlName="price"></label><mat-hint>In Rupees</mat-hint>
+          <mat-error *ngIf="BookForm.get('price').hasError('required')">Required Field</mat-error>
+          <mat-error *ngIf="BookForm.get('price').hasError('maxlength')">Exceeds Maximum Length</mat-error>
+          <mat-error *ngIf="BookForm.get('price').hasError('pattern')">The Numbers are only allowed</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="half" color="accent">
+          <mat-label>Quantity *</mat-label><label><input matInput formControlName="quantity"></label>
+          <mat-error *ngIf="BookForm.get('quantity').hasError('required')">Required Field</mat-error>
+          <mat-error *ngIf="BookForm.get('quantity').hasError('maxlength')">Exceeds Maximum Length</mat-error>
+          <mat-error *ngIf="BookForm.get('quantity').hasError('pattern')">The Numbers are only allowed</mat-error>
+        </mat-form-field>
+      </mat-toolbar-row>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-action-row align="end">
+      <button *ngIf="id===0" mat-raised-button color="accent" (click)="submit()" [disabled]="BookForm.invalid">
+        <mat-icon>save</mat-icon>save</button>
+      <button *ngIf="id!==0" mat-raised-button color="accent" (click)="update()" [disabled]="BookForm.invalid">
+        <mat-icon>update</mat-icon>Update</button>
+      <button mat-stroked-button color="warn"><mat-icon>cancel</mat-icon>cancel</button>
+    </mat-action-row>
+  </mat-card-actions>
+</mat-card>

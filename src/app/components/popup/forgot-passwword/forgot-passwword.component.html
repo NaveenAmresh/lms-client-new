@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{ data.name}}</h1>
+<mat-dialog-content>
+  <table><tr>
+    <td><mat-form-field color="accent" align="start">
+      <input type="text" matInput placeholder="Enter Mail-Id / Phone Number" formControlName="authenticate">
+    </mat-form-field></td>
+    <td><button mat-fab>
+      <mat-icon aria-label="Example icon-button with a send icon">send</mat-icon>
+    </button></td></tr>
+  </table>
+</mat-dialog-content>
+<div class="example-button-row">
+  <button mat-stroked-button (click)="onNoClick()" color="warn">
+    <mat-icon>cancel</mat-icon>
+    Cancel
+  </button>
+</div>

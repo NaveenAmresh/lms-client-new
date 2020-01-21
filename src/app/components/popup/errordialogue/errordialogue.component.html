@@ -1,0 +1,16 @@
+<h3 [style.color]="data.color"><mat-icon class="align" [style.color]="data.color1">{{data.icon1}}</mat-icon> {{data.head}}</h3>
+<mat-dialog-content>
+  <div [style.color]="data.color2">
+    <mat-icon class="align">{{data.icon2}}</mat-icon>
+    {{data.content1}}
+  </div>
+</mat-dialog-content>
+<br>
+<div mat-dialog-actions>
+<span style="flex: 1 1 auto;"></span>
+  <button mat-stroked-button (click)="onClick()" [matTooltip]="data.tip" [style.color]="data.color3">
+    <mat-icon class="example-icon" *ngIf="data.icon3!=''">{{data.icon3}}</mat-icon>
+    {{data.content2}}
+  </button>
+</div>
+

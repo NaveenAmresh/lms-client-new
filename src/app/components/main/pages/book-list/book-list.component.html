@@ -1,0 +1,75 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">Books List</h1>
+<div class="example-container mat-elevation-z8 pad">
+<div mat-dialog-actions align="end">
+  <a routerLink="../book"><button mat-raised-button matTooltip="Add Book" aria-label="Button">
+    <mat-icon>library_add</mat-icon>
+  </button></a>
+  <mat-form-field color="accent">
+    <input matInput #search (keyup)="applyFilter($event.target.value)" placeholder="Type any values to search">
+  </mat-form-field>
+</div>
+<div class="example-table-container" id="table">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Index</b></th>
+      <td mat-cell *matCellDef="let i = index"> {{i+1}} </td>
+    </ng-container>
+    <ng-container matColumnDef="isbn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>ISBN - Number</b></th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.isbn||'Not Available'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="category.category">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Genre</b></th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.category.category||'Not Available'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="book_title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Book Title</b> </th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.book_title||'Not Available'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="publisher.publisher">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Publisher</b> </th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.publisher.publisher||'Not Available'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Quantity</b></th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.quantity||'Borrowed(ALL)'}}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Status</b></th>
+      <td mat-cell *matCellDef="let BookRow">{{BookRow.status==='A'?'Active':''}}{{BookRow.status==='T'?'Disabled':''}}<br>
+        <mat-slide-toggle [checked]="BookRow.status==='A'"
+        (toggleChange)="BookRow.status==='A'?BookRow.status='T':BookRow.status='A';disable(BookRow.book_id,BookRow);">
+      </mat-slide-toggle></td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef><b>More Details</b> </th>
+      <td mat-cell *matCellDef="let BookRow">
+        <button mat-icon-button>
+          <mat-icon routerLink="../book" [queryParams]="{ id: BookRow.book_id, type : 'edit' }"  matTooltip="View More Details">loupe
+          </mat-icon></button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="background-color: whitesmoke"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table><div align="center" *ngIf="loading===true"><mat-spinner></mat-spinner></div>
+  <div align="center" *ngIf="dataSource.data.length === 0 && loading===false"><h2>No Records Found</h2></div></div>
+<mat-toolbar style="bottom: 0; position: sticky; z-index: 10; background-color: whitesmoke">
+  <mat-toolbar-row>
+    <button mat-icon-button color="accent" matTooltip="Share External">
+      <mat-icon title="share" [matMenuTriggerFor]="exportMenu">share</mat-icon>
+    </button>
+    <mat-menu #exportMenu>
+      <a mat-menu-item (click)="print_f()"><mat-icon>print</mat-icon>Print - PDF</a>
+      <a mat-menu-item (click)="text_f()"><mat-icon>text_format</mat-icon>Editable - Doc</a>
+      <a mat-menu-item (click)="csv_f()"><mat-icon>archive</mat-icon>Export as CSV</a>
+      <a mat-menu-item (click)="excel_f()"><mat-icon>insert_drive_file</mat-icon>Export as Sheet</a>
+    </mat-menu>
+    <mat-form-field color="accent" style="width: 10%">
+      <mat-select value="A" (selectionChange)="f1=$event.value;applyFilter(search.value)"><mat-option value="">All</mat-option>
+        <mat-option value="A">Active</mat-option><mat-option value="T">Disabled</mat-option></mat-select>
+    </mat-form-field>
+    <span style="flex: 1 1 auto;"></span>
+    <mat-paginator (page)="table(search.value,$event)" [pageSizeOptions]="pagesize" [pageSize]="10" showFirstLastButtons color="accent" style="background-color: whitesmoke"></mat-paginator>
+  </mat-toolbar-row>
+</mat-toolbar>
+</div>

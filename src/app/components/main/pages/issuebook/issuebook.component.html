@@ -1,0 +1,130 @@
+<h1 class="mat-h3" style="padding: 10px 0 0 10px">Issue books</h1>
+<mat-accordion>
+  <mat-expansion-panel [expanded]="step === 0" hideToggle disabled>
+    <mat-expansion-panel-header expandedHeight="0%">
+      <mat-panel-title><h1>{{head}}{{header|titlecase}}</h1></mat-panel-title>
+    </mat-expansion-panel-header>
+      <mat-form-field color="accent">
+        <input #search1 matInput (keyup)="applyFilter1($event.target.value);head = '';header = '';selection1.clear()"
+               placeholder="Search the Member List" matTooltip="Enter the Name / Mobile Number / Email-Id">
+        <button mat-icon-button matSuffix (click)="selection1.clear();search1.value='';head = '';header = '';applyFilter1('');">
+          <mat-icon matTooltip="clear">close</mat-icon></button>
+      </mat-form-field>
+      <div *ngIf="!table1" class="example-container mat-elevation-z8" (scroll)="scroll1($event)">
+        <table mat-table [dataSource]="dataSource1" matSort #sort1="matSort">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox disabled></mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let UserRow">
+              <mat-checkbox (click)="$event.stopPropagation();" (change)="$event ? selection1.toggle(UserRow) : null;
+              selectId = UserRow.user_id; count = booklimit - UserRow.count; setHead(UserRow.firstname, UserRow.lastname)"
+              [checked]="selection1.isSelected(UserRow)" [aria-label]="checkboxLabel1(UserRow)" [disabled]="UserRow.count>=limit"
+              [matTooltip]="UserRow.count>=limit?'User Exceeded Limit':''" matTooltipPosition="left">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Index</b></th>
+            <td mat-cell *matCellDef="let i = index"> {{i+1}}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="firstname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Name</b></th>
+            <td mat-cell *matCellDef="let UserRow">{{UserRow.firstname||'Not Available'|titlecase}}
+              <span *ngIf="UserRow.lastname!==null">{{UserRow.lastname|titlecase}}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="mobile">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Mobile Number</b> </th>
+            <td mat-cell *matCellDef="let UserRow"> {{UserRow.mobile||'Not Available'}} </td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Email-Id</b></th>
+            <td mat-cell *matCellDef="let UserRow">{{UserRow.email||'Not Available'|titlecase}}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        </table><div align="center" *ngIf="loading1===true"><mat-spinner></mat-spinner></div>
+        <div align="center" *ngIf="dataSource1.data.length === 0 && loading1===false"><h2>No Records Found</h2></div></div>
+      <mat-action-row>
+          <button mat-raised-button color="accent" [disabled]="selection1.isEmpty()"
+                  (click)="step = 1; head = 'SELECTED MEMBER : ';"
+                  matTooltip="Issue Books to {{header}}" matTooltipPosition="left">
+            <mat-icon>how_to_reg</mat-icon>
+          </button>
+      </mat-action-row>
+  </mat-expansion-panel>
+  <mat-expansion-panel [expanded]="step === 1" hideToggle disabled>
+  <mat-expansion-panel-header expandedHeight="0%">
+  </mat-expansion-panel-header>
+    <mat-form-field style="width: 20%"><mat-label>Default Date Limit</mat-label>
+      <input #limit matInput [matDatepicker]="dp3" disabled [value]="date" [min]="curdate" (dateChange)="date_limit = limit.value">
+      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+      <mat-datepicker #dp3 touchUi disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field color="accent">
+      <mat-chip-list #chipList>
+        <mat-chip color="primary" *ngFor="let i of books" selectable>{{i|titlecase}}</mat-chip>
+    </mat-chip-list>
+      <input #search2 matInput [matChipInputFor]="chipList" (keyup)="applyFilter2($event.target.value)"
+             matTooltip="Enter the Book Name/ ISBN / Genre / Publisher Name"
+             placeholder="Enter the Book Name/ ISBN / Genre / Publisher Name.....">
+      <button mat-icon-button matSuffix (click)="search2.value=''; applyFilter2(''); values = []; books = [];selection2.clear()">
+        <mat-icon matTooltip="clear">close</mat-icon></button>
+    </mat-form-field>
+    <div *ngIf="!table2" class="example-container mat-elevation-z8" (scroll)="scroll2($event)">
+      <table mat-table [dataSource]="dataSource2" matSort #sort2="matSort">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox disabled></mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let BookRow">
+            <mat-checkbox (click)="$event.stopPropagation();" (change)="$event ? selection2.toggle(BookRow) : null;
+            selectRow(BookRow)" [checked]="values.includes(BookRow.book_id)"
+            [matTooltip]="BookRow.quantity === 0 ? 'Book Not Available' : null"
+            [disabled]="(BookRow.quantity === 0 || selection2.selected.length === count)&&values.includes(BookRow.book_id)===false"
+            [aria-label]="checkboxLabel2(BookRow)"></mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Index</b> </th>
+          <td mat-cell *matCellDef="let i = index"> {{i+1}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="isbn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>ISBN</b></th>
+          <td mat-cell *matCellDef="let BookRow"> {{BookRow.isbn||'Not Available'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="category.category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Genre</b> </th>
+          <td mat-cell *matCellDef="let BookRow"> {{BookRow.category.category||'Not Available'|titlecase}} </td>
+        </ng-container>
+        <ng-container matColumnDef="book_title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Book Title</b> </th>
+          <td mat-cell *matCellDef="let BookRow"> {{BookRow.book_title||'Not Available'|titlecase}} </td>
+        </ng-container>
+        <ng-container matColumnDef="publisher.publisher">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Publisher</b> </th>
+          <td mat-cell *matCellDef="let BookRow"> {{BookRow.publisher.publisher||'Not Available'|titlecase}} </td>
+        </ng-container>
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Availability</b> </th>
+          <td mat-cell *matCellDef="let BookRow"> {{BookRow.quantity||'Not Available'}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2;" disabled></tr>
+      </table><div align="center" *ngIf="loading1===true"><mat-spinner></mat-spinner></div>
+      <div align="center" *ngIf="dataSource1.data.length === 0 && loading2===false"><h2>No Records Found</h2></div></div>
+    <mat-action-row>
+        <button mat-button color="warn" (click)="step = 0; head = ''" matTooltip="Back to Previous">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      <button mat-raised-button color="accent" (click)="issue();date_limit = limit.value" [disabled]="selection2.isEmpty()"
+              matTooltip="Issue Selected Books to the Member">
+          <mat-icon>book</mat-icon>
+          Submit
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>

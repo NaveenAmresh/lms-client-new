@@ -1,0 +1,222 @@
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
+  <mat-sidenav-container class="example-sidenav-container" autosize [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+    <mat-sidenav #sidenav mode="side" [(opened)]="toggle" fixedInViewport="true"
+                 [mode]="mobileQuery.matches ? 'over' : 'side'"
+                 [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+      <mat-card class="image" [style.background-image]="coverUrl">
+        <mat-card-actions align="center" class="text">
+          <img mat-card-avatar mat-card-sm-image [src]="profileUrl" alt="LOGIN">
+          <mat-card-subtitle><b>ADMIN</b></mat-card-subtitle>
+        </mat-card-actions>
+      </mat-card>
+      <mat-accordion displayMode="flat" [style.color]="color1">
+        <mat-expansion-panel [style.background-color]="color1" hideToggle="true" disabled="true">
+          <mat-expansion-panel-header routerLinkActive="active-link"><a routerLink="dash">
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>dashboard</mat-icon><span>Dashboard</span>
+            </mat-panel-title></a>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[0]=true" (closed)="active[0]=false"
+                             hideToggle="true" [expanded]="[this.href==='/panel/changePassword'||this.href==='/panel/profile']">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[0]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[0]" [style.color]="color2">expand_less</mat-icon>
+            <mat-panel-title [style.color]="color2">
+              <mat-icon>account_circle</mat-icon><span>My Profile</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="changePassword">
+              <mat-icon>{{ icon }}</mat-icon><span>Change Password</span></a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="profile">
+              <mat-icon>{{ icon }}</mat-icon><span>Update Profile</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[1]=true" (closed)="active[1]=false"
+                             hideToggle="true" [expanded]="[this.href==='/panel/book'||this.href==='/panel/bookList']">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[1]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[1]" [style.color]="color2">expand_less</mat-icon>
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>library_books</mat-icon><span>Manage Books</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="book">
+              <mat-icon>{{ icon }}</mat-icon><span>Add Book</span></a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="bookList">
+              <mat-icon>{{ icon }}</mat-icon><span>View Books</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[2]=true" (closed)="active[2]=false"
+                             hideToggle="true">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[2]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[2]" [style.color]="color2">expand_less</mat-icon>
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>local_atm</mat-icon><span>Manage Dues</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="reminder">
+               <mat-icon>{{ icon }}</mat-icon>
+              <span>Dues Reminder</span></a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="dues">
+              <mat-icon>{{ icon }}</mat-icon><span>View Dues</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[3]=true" (closed)="active[3]=false"
+                             hideToggle="true" [expanded]="[this.href==='/panel/issueBook'||this.href==='/panel/issuedList']">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[3]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[3]" [style.color]="color2">expand_less</mat-icon>
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>collections_bookmark</mat-icon><span>Issue Books</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="issueBook">
+              <mat-icon>{{ icon }}</mat-icon><span>Issue Book</span></a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="issuedList">
+              <mat-icon [style.color]="color2">{{ icon }}</mat-icon><span>Issued Books</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" hideToggle="true" disabled="true">
+          <mat-expansion-panel-header routerLinkActive="active-link"><a routerLink="password">
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>archive</mat-icon><span>View Archives</span>
+            </mat-panel-title></a>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[4]=true" (closed)="active[4]=false"
+                             hideToggle="true" [expanded]="[this.href==='/panel/user'||this.href==='/panel/usersList']">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[4]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[4]" [style.color]="color2">expand_less</mat-icon>
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>supervised_user_circle</mat-icon><span>Manage Members</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="user">
+              <mat-icon [style.color]="color2">{{ icon }}</mat-icon><span>Add Members</span></a>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLinkActive="active-link" [style.color]="color2"><a routerLink="usersList">
+              <mat-icon>{{ icon }}</mat-icon><span>View Members</span></a></mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" hideToggle="true" disabled="true">
+          <mat-expansion-panel-header routerLinkActive="active-link"><a routerLink="settings">
+             <mat-panel-title [style.color]="color2">
+               <mat-icon>settings</mat-icon><span>Settings</span>
+            </mat-panel-title></a>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" hideToggle="true" disabled="true">
+          <mat-expansion-panel-header routerLinkActive="active-link"><a routerLink="password">
+            <mat-panel-title [style.color]="color2">
+              <mat-icon>book</mat-icon><span>Book Request</span>
+            </mat-panel-title></a>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" hideToggle="true" disabled="true">
+          <mat-expansion-panel-header routerLinkActive="active-link"><a routerLink="setup">
+            <mat-panel-title [style.color]="color2">
+              <mat-icon>build</mat-icon><span>Institution Setup</span>
+            </mat-panel-title></a>
+          </mat-expansion-panel-header>
+        </mat-expansion-panel>
+        <mat-expansion-panel [style.background-color]="color1" (opened)="active[5]=true" (closed)="active[5]=false"
+                             hideToggle="true" expanded="false">
+          <mat-expansion-panel-header>
+            <mat-icon *ngIf="!active[5]" [style.color]="color2">expand_more</mat-icon>
+            <mat-icon *ngIf="active[5]" [style.color]="color2">expand_less</mat-icon>
+             <mat-panel-title [style.color]="color2">
+               <mat-icon [style.color]="color2">
+                info
+              </mat-icon>
+               <span [style.color]="color2">About Software</span>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link"><a [style.color]="color2" routerLink="password">
+               <mat-icon>{{ icon }}</mat-icon><span>Software Information</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+          <mat-divider></mat-divider>
+          <mat-nav-list>
+            <mat-list-item routerLinkActive="active-link"><a [style.color]="color2" routerLink="password">
+               <mat-icon [style.color]="color2">{{ icon }}</mat-icon><span>Licensed Under</span></a>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content style="background: #f2f2f2; color: black">
+      <mat-toolbar [style.color]="color1" [style.background-color]="color2">
+        <mat-toolbar-row>
+          <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+          <span class="example-spacer"></span>
+          <button mat-icon-button matTooltip="Notifications" [matMenuTriggerFor]="notify">
+            <mat-icon [matBadge]="notifications" matBadgePosition="below after" matBadgeColor="warn"> {{ notificationicon }} </mat-icon>
+          </button>
+          <mat-menu #notify="matMenu" [overlapTrigger]="false">
+            <button mat-menu-item style="width: 500px!important;">
+              <mat-icon>message</mat-icon>
+              <span>New Request</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item style="width: 500px!important; height: auto">
+              <mat-icon>mail_outline</mat-icon>
+              <span>You got a new message in your mail address</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item style="width: 500px!important;">
+              <mat-icon>signal_cellular_off</mat-icon>
+              <span>Connection Lost</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item style="width: 500px!important;">
+              <mat-icon>message</mat-icon>
+              <span>New Request</span>
+            </button>
+          </mat-menu>
+          <button mat-icon-button matTooltip="Themes" [matMenuTriggerFor]="theme">
+            <mat-icon>tune</mat-icon>
+          </button>
+          <mat-menu #theme="matMenu">
+            <button mat-menu-item>Item 1</button>
+            <button mat-menu-item>Item 2</button>
+          </mat-menu>
+          <button mat-icon-button matTooltip="Logout">
+            <mat-icon>power_settings_new</mat-icon>
+          </button>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+  <div style="position: fixed; left: 0; bottom: 0; width: 100%; color: white; text-align: center;"
+       [style.background-color]="color2" [style.color]="color1" [style.border]="'5px solid '+color1 ">
+    This Product is Licensed Under @{{cr}}</div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

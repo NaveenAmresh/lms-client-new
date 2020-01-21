@@ -1,0 +1,65 @@
+mat-sidenav-container
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  background-color: #eeeeee
+  img
+    filter: brightness(110%) drop-shadow(8px 8px 10px black) saturate(120%)
+mat-accordion
+  mat-expansion-panel
+    padding: 10px 0 10px 0
+    mat-expansion-panel-header
+      a
+        text-decoration: none
+        mat-panel-title
+          mat-icon
+            padding-right: 10px
+            align-items: center
+          span
+            padding-top: 2px
+      mat-panel-title
+        mat-icon
+          padding-right: 10px
+          align-items: center
+        span
+          padding-top: 2px
+    mat-nav-list
+      mat-list-item
+        text-decoration: none
+        span
+          padding-left: 27px
+          padding-right: 27px
+.image
+  background-repeat: no-repeat
+  background-size: cover
+  position: relative
+  height: 15%
+
+.image:before
+  content: ''
+  position: absolute
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  background: rgba(0,0,0,0.2)
+
+.text
+  mat-card-subtitle
+    color: #fffffb
+    position: relative
+    padding-top: 10px
+    filter: drop-shadow(18px 18px 35px black) saturate(250%)
+
+.active-link
+  background-color: rgba(0, 0, 0, 0.08)
+
+.example-icon
+  padding: 0 14px
+
+.example-spacer
+  flex: 1 1 auto
+
+

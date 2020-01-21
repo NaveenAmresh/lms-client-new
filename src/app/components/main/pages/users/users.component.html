@@ -1,0 +1,138 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">{{ title }}</h1>
+<mat-grid-list cols="2" rowHeight="100%">
+  <mat-grid-tile>
+    <mat-card style="width: 100%; height: 100%; padding: 100%">
+      <mat-card-title align="center" style="padding-top: 10%">
+        Default Profile Pic
+      </mat-card-title>
+      <mat-card-content>
+        <img [src]="imgURL || '../../../../assets/images/avatar.png'" accept='image/ *' alt="Image preview not available"
+             style="border-radius: 100%;" height="400px" width="400px" [hidden]="image">
+        <video #streams [srcObject]="url" height="400" autoplay [hidden]="video">
+          <canvas #canvas></canvas>
+        </video>
+      </mat-card-content>
+      <mat-card-footer  *ngIf="!image" align="end">
+        <button mat-fab [matMenuTriggerFor]="capturemenu" >
+          <mat-icon [matTooltip] = 'tooltip'>{{icon}}</mat-icon>
+        </button>
+        <input #file type="file" accept='image/ *' (change)="preview(file.files)" hidden />
+        <mat-menu #capturemenu>
+          <button mat-menu-item (click)="record()"><mat-icon>camera</mat-icon>Capture Image</button>
+          <button mat-menu-item (click)="file.click()"><mat-icon>add_photo_alternate</mat-icon>Select Photo</button>
+          <button  *ngIf="imgURL" (click)="removeImage()" mat-menu-item><mat-icon>remove_circle_outline</mat-icon>Remove Photo</button>
+        </mat-menu>
+      </mat-card-footer>
+        <mat-card-footer  *ngIf="!video" align="center">
+          <button mat-fab (click)="capture()">
+            <mat-icon [matTooltip] = 'tooltip'>camera</mat-icon>
+          </button>
+          <button mat-fab color="warn" (click)="cancel()">
+            <mat-icon matTooltip = 'Cancel'>clear</mat-icon>
+          </button>
+        </mat-card-footer>
+    </mat-card>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <mat-card style="width: 100%; height: 100%; padding-top: 10%;">
+      <mat-card-content>
+        <form [formGroup]="userForm">
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>mobile *</mat-label>
+            <mat-error *ngIf="userForm.get('mobile').hasError('required')">Required Field</mat-error>
+            <mat-error *ngIf="userForm.get('mobile').hasError('pattern')||userForm.get('mobile')
+            .hasError('minlength')||userForm.get('mobile').hasError('maxlength')">
+              Must have numbers of length 10 Only</mat-error>
+            <mat-error *ngIf="userForm.get('mobile').hasError('incorrect')">This Mobile Number Already Exist</mat-error>
+            <label>
+              <input matInput type="text" formControlName="mobile" (change)="checkMobile(userForm.value.mobile)" [readonly]="id!==0">
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Email</mat-label>
+            <mat-error *ngIf="userForm.get('email').hasError('email')">Must be a Proper Mail-Id</mat-error>
+            <mat-error *ngIf="userForm.get('email').hasError('incorrect')">This Email-Id Already Exist</mat-error>
+            <label>
+              <input *ngIf="id === 0" matInput formControlName="email" (change)="checkEmail(userForm.value.email)">
+              <input *ngIf="id !== 0" matInput formControlName="email" (change)="checkUpEmail(userForm.value.email)">
+            </label>
+          </mat-form-field>
+          <mat-form-field  appearance="outline" color="accent">
+            <mat-label>First Name * </mat-label>
+            <mat-error *ngIf="userForm.get('firstname').hasError('required')">Required Field</mat-error>
+            <mat-error *ngIf="userForm.get('firstname').hasError('minlength')||userForm.get('firstname')
+            .hasError('maxlength')||userForm.get('firstname').hasError('pattern')">
+              Must contain only Alphabets of length 3 to 10 </mat-error>
+            <label>
+              <input matInput formControlName="firstname">
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Last Name </mat-label>
+            <mat-error *ngIf="userForm.get('lastname').hasError('minlength')||userForm.get('lastname')
+            .hasError('maxlength')||userForm.get('lastname').hasError('pattern')">
+              Must contain only Alphabets of length 3 to 10 </mat-error>
+            <label>
+              <input matInput formControlName="lastname">
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Address *</mat-label>
+            <mat-error *ngIf="userForm.get('address').hasError('required')">Required Field</mat-error>
+            <label>
+              <textarea matInput formControlName="address"></textarea>
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>State *</mat-label>
+            <mat-error *ngIf="userForm.get('state').hasError('required')">Required Field</mat-error>
+            <label>
+              <mat-select #st formControlName="state" (selectionChange)="getCity();;">
+                <mat-option *ngFor="let state of states" [value]="state.id" [disabled]="state.id === 0">
+                  {{ state.name }}
+                </mat-option>
+              </mat-select>
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>City *</mat-label>
+            <mat-error *ngIf="userForm.get('city').hasError('required')">Required Field</mat-error>
+            <label>
+              <mat-select #ci formControlName="city">
+                <mat-option *ngIf="userForm.get('state').value == ''" disabled>-- Please Select the State First --</mat-option>
+                <mat-option *ngFor="let city of cities" [value]="city.id" [disabled]="city.id === 0">
+                  {{city.name}}
+                </mat-option>
+              </mat-select>
+            </label>
+          </mat-form-field>
+          <mat-form-field appearance="outline" color="accent">
+            <mat-label>Zip *</mat-label>
+            <mat-error *ngIf="userForm.get('zip').hasError('required')">Required Field</mat-error>
+            <mat-error *ngIf="userForm.get('zip').hasError('pattern')||userForm.get('zip')
+            .hasError('minlength')||userForm.get('zip').hasError('maxlength')">
+              Enter numbers of length 6
+            </mat-error>
+            <label>
+              <input matInput formControlName="zip">
+            </label>
+          </mat-form-field>
+        </form>
+        <button *ngIf="id === 0" mat-raised-button (click)="submit()"
+                [disabled]="userForm.invalid||userForm.value.city===''">
+          <mat-icon>save</mat-icon>
+          save
+        </button>
+        <button *ngIf="id !== 0" mat-raised-button color="accent" (click)="update()"
+                [disabled]="userForm.invalid||userForm.value.city===''">
+          <mat-icon>update</mat-icon>
+          Update
+        </button>
+        <button mat-stroked-button color="warn">
+          <mat-icon>cancel</mat-icon>
+            cancel
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

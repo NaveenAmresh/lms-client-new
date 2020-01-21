@@ -1,0 +1,75 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">Dues Reminder List</h1>
+<div class="example-container mat-elevation-z8 pad">
+  <div mat-dialog-actions align="end">
+    <a routerLink="../dues"><button mat-raised-button matTooltip="Issue Book" aria-label="Button">
+      <mat-icon>calendar_today</mat-icon>
+    </button></a>
+  </div><br>
+  <div class="example-table-container" id="table">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Index</b></th>
+        <td mat-cell *matCellDef="let i = index">{{i+1}} </td>
+      </ng-container>
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>User Name</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{(ReminderRow.issue.user.firstname + ' ' + ReminderRow.issue.user.lastname||'')||'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="mobile">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Mobile</b> </th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue.user.mobile || 'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="book">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Book Title</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue_book.book.book_title || 'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="isbn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>ISBN</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue_book.book.isbn || 'Not Available'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="issued_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Issued By</b> </th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue.issued_by || 'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="issued_on">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Issued On</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue.issued_on || 'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="issued_limit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Expire(d) On</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.issue.issued_limit || 'Not Available'| titlecase}}</td>
+      </ng-container>
+      <ng-container matColumnDef="fType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Reason</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.fine_type==='D'?'Damaged':''}}
+          {{ReminderRow.fine_type==='E'?'Expired':''}}
+          </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Action</b></th>
+        <td mat-cell *matCellDef="let ReminderRow">{{ReminderRow.status==='T'?'Cancelled':ReminderRow.status==='F'?'Fined':''}}
+          <mat-form-field appearance="outline" *ngIf="ReminderRow.status==='A'"><mat-label>Apply Fine</mat-label>
+            <label><input #fine matInput [value]="ReminderRow.fine_amount" type="number" min="1">
+            </label><mat-hint>In Rupees</mat-hint>
+            <button mat-icon-button matSuffix [disabled]="fine.value<1" (click)="submit(fine.value, ReminderRow.reminder_id)">
+              <mat-icon [style.color]="fine.value<1?'#fff':'#22a93b'" matTooltip="Submit Fine">input</mat-icon></button>
+            <button mat-icon-button matPrefix>
+              <mat-icon [style.color]="'#ff003e'" matTooltip="Cancel Fine">delete_outline</mat-icon></button>
+          </mat-form-field>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="background-color: whitesmoke"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table><div align="center" *ngIf="loading===true"><mat-spinner></mat-spinner></div>
+    <div align="center" *ngIf="dataSource.data.length === 0 && loading===false"><h2>No Records Found</h2></div></div>
+  <mat-toolbar style="bottom: 0; position: sticky; z-index: 10; background-color: whitesmoke"><mat-toolbar-row>
+    <mat-form-field color="accent" style="width: 10%">
+      <mat-select value="A" (selectionChange)="f1=$event.value;ngOnInit()"><mat-option value="">All</mat-option>
+        <mat-option value="A">Active</mat-option><mat-option value="F">Fined</mat-option><mat-option value="T">Cancelled</mat-option></mat-select>
+    </mat-form-field>
+    <span style="flex: 1 1 auto;"></span>
+      <mat-paginator (page)="table($event)" [pageSizeOptions]="pagesize" [pageSize]="10"
+                     showFirstLastButtons color="accent" style="background-color: whitesmoke"></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>

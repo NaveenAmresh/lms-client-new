@@ -1,0 +1,86 @@
+<h1 class="mat-h3" style="padding: 15px 0 0 15px">Issued Books</h1>
+<div class="example-container mat-elevation-z8 pad">
+  <div mat-dialog-actions align="end">
+    <a routerLink="../issueBook"><button mat-raised-button matTooltip="Issue Book" aria-label="Button">
+      <mat-icon>note_add</mat-icon>
+    </button></a>
+    <mat-form-field color="accent">
+      <input matInput #search (keyup)="applyFilter($event.target.value)" placeholder="Type any values to search">
+    </mat-form-field>
+  </div>
+<div class="example-table-container" id="table">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Index</b></th>
+      <td mat-cell *matCellDef="let i = index">{{i+1}} </td>
+    </ng-container>
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>User Name</b></th>
+    <td mat-cell *matCellDef="let IssuedRow">{{(IssuedRow.user.firstname||'Not Available' + ' ' + IssuedRow.user.lastname)| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="mobile">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Mobile</b> </th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.user.mobile || 'Not Available'| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Email-Id</b></th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.user.email || 'Not Available'| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="issued_by">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Issued By</b> </th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.issued_by || 'Not Available'| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="issued_on">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Issued On</b></th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.issued_on || 'Not Available'| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="issued_limit">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Expire(d) On</b></th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.issued_limit || 'Not Available'| titlecase}}</td>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Status</b> </th>
+    <td mat-cell *matCellDef="let IssuedRow">{{IssuedRow.is_book==='A'?'Active':''}}{{IssuedRow.is_book==='T'?'Finished':''}}
+      {{IssuedRow.is_book==='D'?'Disabled':''}}</td>
+  </ng-container>
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef><b>Action</b> </th>
+    <td mat-cell *matCellDef="let IssuedRow">
+      <button mat-icon-button [color]="IssuedRow.is_book===('T'||'D')?'accent':null" (click)="issuedBooks(IssuedRow.issue_id)"
+              [matTooltip]="IssuedRow.is_book===('T'||'D')?'View Issued Books here':'View Active Issued Books here'">
+        <mat-icon>library_books</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="background-color: whitesmoke"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table><div align="center" *ngIf="loading===true"><mat-spinner></mat-spinner></div>
+  <div align="center" *ngIf="dataSource.data.length === 0 && loading===false"><h2>No Records Found</h2></div></div>
+<mat-toolbar style="bottom: 0; position: sticky; z-index: 10; background-color: whitesmoke">
+  <mat-toolbar-row>
+    <button mat-icon-button color="accent" matTooltip="Share External">
+      <mat-icon title="share" [matMenuTriggerFor]="exportMenu">share</mat-icon>
+    </button>
+    <mat-menu #exportMenu>
+      <a mat-menu-item (click)="print_f()"><mat-icon>print</mat-icon>Print - PDF</a>
+      <a mat-menu-item (click)="text_f()"><mat-icon>text_format</mat-icon>Editable - Doc</a>
+      <a mat-menu-item (click)="csv_f()"><mat-icon>archive</mat-icon>Export as CSV</a>
+      <a mat-menu-item (click)="excel_f()"><mat-icon>insert_drive_file</mat-icon>Export as Sheet</a>
+    </mat-menu>
+    <mat-form-field color="accent" style="width: 10%">
+      <mat-select value="A" (selectionChange)="f1=$event.value;applyFilter(search.value)"><mat-option value="">All</mat-option>
+        <mat-option value="A">Active</mat-option><mat-option value="T">Finished</mat-option></mat-select>
+    </mat-form-field><mat-form-field style="width: 20%"><mat-label>Issued On</mat-label>
+      <input matInput [matDatepicker]="dp1" [value]="f2" (dateInput)="f2=$event.target.value;applyFilter(search.value)" readonly>
+      <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle><mat-datepicker #dp1 disabled="false"></mat-datepicker>
+      <button mat-button *ngIf="f2!=''" (click)="f2='';applyFilter(search.value)" color="warn" matSuffix>clear</button>
+    </mat-form-field><mat-form-field style="width: 20%"><mat-label>Expire On</mat-label>
+      <input matInput [matDatepicker]="dp2" (dateInput)="f3=$event.target.value;applyFilter(search.value)" readonly>
+      <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle><mat-datepicker #dp2 disabled="false"></mat-datepicker>
+    <button mat-button *ngIf="f3!=''" (click)="f3='';applyFilter(search.value)" color="warn" matSuffix>clear</button>
+    </mat-form-field><span style="flex: 1 1 auto;"></span>
+    <mat-paginator (page)="table(search.value,$event)" [pageSizeOptions]="pagesize" [pageSize]="10"
+                   showFirstLastButtons color="accent" style="background-color: whitesmoke"></mat-paginator>
+  </mat-toolbar-row>
+</mat-toolbar>
+</div>

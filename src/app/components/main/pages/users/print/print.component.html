@@ -1,0 +1,44 @@
+<div id="print-section" style="height: 60%; width: 60%; margin-left: 15%">
+  <mat-card style="height: 91.7%;background-color: #ff003e; border: 10px solid #ffffff">
+    <mat-card-content style="height: 100%; width: 100%">
+      <mat-card style="border: 1px solid deepskyblue; background-color: deepskyblue; color: #ffffff">
+        <mat-card-title align="center">Library Management System</mat-card-title>
+        <mat-card-subtitle align="center">User Id Card</mat-card-subtitle>
+      </mat-card>
+      <mat-grid-list cols="2" rowHeight="95%">
+        <mat-grid-tile>
+          <img [src]="imgURL || '../../../../assets/images/avatar.png'" accept='image/ *' alt="Image preview not available"
+               style="border-radius: 100%; filter: drop-shadow(1px 1px 7px black) contrast(130%) brightness(150%);"
+               height="65%" width="70%" [hidden]="image">
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-list style="width: 100%; background-color: rgb(255,255,255); border: 1px solid deepskyblue">
+            <mat-list-item>User Name : {{ firstname | titlecase }} {{ this.lastname | titlecase }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Email-Id : {{ email }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Mobile Number : {{ mobile }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Address : {{ address }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>State : {{ state }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>city : {{ city }}</mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>Zip : {{ zip }}</mat-list-item>
+          </mat-list>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+</div>
+<br>
+<br>
+<mat-action-row>
+  <button [useExistingCss]="true" mat-raised-button printSectionId="print-section" ngxPrint>
+    <mat-icon>print</mat-icon>
+  </button>
+  <button routerLink="../user" [queryParams]="{ id: id }" mat-raised-button color="warn" style="margin-left: 1.5%">
+    <mat-icon>edit</mat-icon>
+  </button>
+</mat-action-row>

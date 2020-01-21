@@ -1,0 +1,22 @@
+<form><mat-toolbar-row>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%">
+    <mat-label>Add Book Category</mat-label>
+    <label><input #catadd matInput type="text"></label>
+    <button matSuffix mat-icon-button (click)="add1(catadd.value);catadd.value=''" [disabled]="catadd.value===''"><mat-icon>add_circle</mat-icon></button>
+  </mat-form-field></mat-toolbar-row>
+</form>
+<form><mat-toolbar-row>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%">
+    <mat-label>Select Book Category to Edit</mat-label>
+    <label><mat-select #selectcat (selectionChange)="editcat.value=$event.source.selected.viewValue">
+      <mat-option *ngFor="let cat of cats" [value]="cat.category_id" [disabled]="cat.category_id === 0">{{cat.category}}</mat-option>
+    </mat-select></label>
+    <button matSuffix mat-icon-button [disabled]="selectcat.selected===undefined" (click)="d1($event,selectcat.value);"><mat-icon>delete</mat-icon></button>
+  </mat-form-field>
+  <mat-form-field class="half" appearance="outline" style="padding-top: 2%; padding-left: 5px">
+    <mat-label>Edit Book Category</mat-label>
+    <label><input #editcat matInput type="text" [disabled]="selectcat.selected===undefined"></label>
+    <button [disabled]="editcat.value===''||editcat.disabled" (click)="up1(selectcat.selected.value,editcat.value)"
+            matSuffix mat-icon-button><mat-icon>save</mat-icon></button>
+  </mat-form-field></mat-toolbar-row>
+</form>
